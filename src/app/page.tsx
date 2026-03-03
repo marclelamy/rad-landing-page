@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, Cpu, Zap, Shield, Lock, Server, BarChart3, Activity, Wind, Cloud } from 'lucide-react';
+import { ArrowRight, Cpu, Zap, Shield, Lock, Server, BarChart3, Activity, Wind } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0, className = "", duration = 0.8 }: { children: React.ReactNode, delay?: number, className?: string, duration?: number }) => (
   <motion.div
@@ -35,6 +35,24 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const [isAccessDialogOpen, setIsAccessDialogOpen] = useState(false);
+  const [accessForm, setAccessForm] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [isRequestSubmitted, setIsRequestSubmitted] = useState(false);
+
+  const closeAccessDialog = () => {
+    setIsAccessDialogOpen(false);
+    setIsRequestSubmitted(false);
+    setAccessForm({ name: '', email: '', message: '' });
+  };
+
+  const handleAccessRequestSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsRequestSubmitted(true);
+  };
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-text selection:bg-brand-primary/30" ref={containerRef}>
@@ -48,17 +66,6 @@ export default function Home() {
               <Server className="w-4 h-4 text-brand-primary" />
             </div>
             <span className="font-serif font-medium text-xl tracking-tight">GreenLens DC</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-white/60">
-            <a href="#platform" className="hover:text-white transition-colors">Platform</a>
-            <a href="#features" className="hover:text-white transition-colors">Intelligence</a>
-            <a href="#contact" className="hover:text-white transition-colors">Enterprise</a>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="hidden md:block text-sm text-white/60 hover:text-white transition-colors">Log in</button>
-            <button className="bg-white text-black px-5 py-2.5 rounded-full text-sm font-medium hover:scale-105 transition-transform flex items-center gap-2">
-              Get Access <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </nav>
@@ -86,13 +93,14 @@ export default function Home() {
             </FadeIn>
             <FadeIn delay={0.4}>
               <div className="flex flex-col sm:flex-row gap-6">
-                <button className="group relative px-8 py-4 bg-white text-black rounded-full text-base font-medium overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                <button
+                  type="button"
+                  onClick={() => setIsAccessDialogOpen(true)}
+                  className="group relative px-8 py-4 bg-white text-black rounded-full text-base font-medium overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
+                >
                   <span className="relative z-10 flex items-center gap-2">
                     Request Platform Access <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
-                </button>
-                <button className="px-8 py-4 rounded-full text-base font-medium border border-white/20 text-white hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
-                  Read the Whitepaper
                 </button>
               </div>
             </FadeIn>
@@ -336,65 +344,119 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Enterprise CTA */}
-      <section className="py-40 px-6 relative z-10 text-center bg-[#030712]" id="contact">
-        <div className="max-w-4xl mx-auto relative">
-          <div className="absolute inset-0 bg-brand-primary/20 blur-[150px] rounded-full opacity-50 pointer-events-none" />
-          <FadeIn>
-            <div className="w-24 h-24 mx-auto bg-brand-primary/10 rounded-full flex items-center justify-center mb-10 border border-brand-primary/20">
-              <Cloud className="w-10 h-10 text-brand-primary" />
-            </div>
-            <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl mb-10 tracking-tight text-gradient max-w-3xl mx-auto">Ready for Net-Zero Compute?</h2>
-            <p className="text-xl text-white/40 mb-16 font-light max-w-2xl mx-auto leading-relaxed">
-              Join the hyperscalers and colocation operators tracking their complex data center emissions with precision.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button className="px-10 py-5 bg-white text-black rounded-full text-lg font-medium hover:scale-105 transition-transform flex items-center justify-center gap-2 shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]">
-                Request Enterprise Demo
-              </button>
-            </div>
-            <p className="mt-10 text-white/30 text-sm tracking-wide">Enterprise SaaS plans starting at €50k/yr. Undercut custom consulting.</p>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* Minimal Footer */}
       <footer className="py-16 px-6 border-t border-white/5 relative z-10 bg-black">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-20">
-          <div className="col-span-2">
-            <div className="flex items-center gap-3 text-white mb-6">
-              <Server className="w-5 h-5 text-brand-primary" />
-              <span className="font-serif font-medium text-xl tracking-tight">GreenLens DC</span>
-            </div>
-            <p className="max-w-xs text-white/30 text-sm leading-relaxed font-light">
-              The AI-native carbon accounting engine for data centers. Built in Paris. Engineered for the global grid.
-            </p>
+        <div className="max-w-7xl mx-auto mb-12">
+          <div className="flex items-center gap-3 text-white mb-6">
+            <Server className="w-5 h-5 text-brand-primary" />
+            <span className="font-serif font-medium text-xl tracking-tight">GreenLens DC</span>
           </div>
-          <div>
-            <h4 className="text-white font-medium mb-6 text-xs tracking-widest uppercase opacity-50">Platform</h4>
-            <ul className="space-y-4 text-sm text-white/40 font-light">
-              <li><a href="#" className="hover:text-white transition-colors">Scope 1-3 Tracker</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">GPU Lifecycle</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">CSRD Reports</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-medium mb-6 text-xs tracking-widest uppercase opacity-50">Company</h4>
-            <ul className="space-y-4 text-sm text-white/40 font-light">
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Methodology</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-            </ul>
-          </div>
+          <p className="max-w-xs text-white/30 text-sm leading-relaxed font-light">
+            The AI-native carbon accounting engine for data centers. Built in Paris. Engineered for the global grid.
+          </p>
         </div>
-        <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/20 font-light">
+        <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 text-xs text-white/20 font-light">
           <p>© 2026 GreenLens DC. All rights reserved.</p>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-          </div>
         </div>
       </footer>
+
+      {isAccessDialogOpen && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-6">
+          <div
+            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+            onClick={closeAccessDialog}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="request-platform-access-title"
+            className="relative z-10 w-full max-w-xl rounded-[2rem] glass-panel border border-white/10 bg-[#060d18] p-8 md:p-10"
+          >
+            <h3 id="request-platform-access-title" className="font-serif text-3xl md:text-4xl mb-3 text-white">
+              Request Platform Access
+            </h3>
+            <p className="text-white/45 mb-8 font-light">
+              Share your details and our team will follow up shortly.
+            </p>
+
+            {isRequestSubmitted ? (
+              <div className="rounded-2xl border border-brand-primary/30 bg-brand-primary/10 px-6 py-8 text-center">
+                <p className="text-white text-lg">Thanks. Your request has been captured.</p>
+                <button
+                  type="button"
+                  onClick={closeAccessDialog}
+                  className="mt-6 px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/5 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleAccessRequestSubmit} className="space-y-5">
+                <div>
+                  <label htmlFor="access-name" className="block text-sm text-white/70 mb-2">Name</label>
+                  <input
+                    id="access-name"
+                    type="text"
+                    required
+                    value={accessForm.name}
+                    onChange={(event) =>
+                      setAccessForm((current) => ({ ...current, name: event.target.value }))
+                    }
+                    className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 focus:border-brand-primary/60 focus:outline-none"
+                    placeholder="Your full name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="access-email" className="block text-sm text-white/70 mb-2">Email</label>
+                  <input
+                    id="access-email"
+                    type="email"
+                    required
+                    value={accessForm.email}
+                    onChange={(event) =>
+                      setAccessForm((current) => ({ ...current, email: event.target.value }))
+                    }
+                    className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 focus:border-brand-primary/60 focus:outline-none"
+                    placeholder="you@company.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="access-message" className="block text-sm text-white/70 mb-2">Message</label>
+                  <textarea
+                    id="access-message"
+                    required
+                    rows={4}
+                    value={accessForm.message}
+                    onChange={(event) =>
+                      setAccessForm((current) => ({ ...current, message: event.target.value }))
+                    }
+                    className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 focus:border-brand-primary/60 focus:outline-none resize-none"
+                    placeholder="Tell us about your data center needs."
+                  />
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={closeAccessDialog}
+                    className="px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/5 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 rounded-full bg-white text-black font-medium hover:scale-105 transition-transform"
+                  >
+                    Send Request
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
