@@ -14,7 +14,7 @@ const FadeIn = ({ children, delay = 0, className = "", duration = 0.8 }: { child
   >
     {children}
   </motion.div>
-);
+); 
 
 const BackgroundGlow = () => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030712]">
