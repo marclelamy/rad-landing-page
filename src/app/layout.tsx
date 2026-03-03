@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "GreenLens | Data Center Sustainability",
+  title: "Carbon Compute | Data Center Sustainability",
   description: "The AI-powered engine for data center emissions and carbon accounting.",
 };
 

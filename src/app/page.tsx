@@ -65,7 +65,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
               <Server className="w-4 h-4 text-brand-primary" />
             </div>
-            <span className="font-serif font-medium text-xl tracking-tight">GreenLens DC</span>
+            <span className="font-serif font-medium text-xl tracking-tight">Carbon Compute</span>
           </div>
         </div>
       </nav>
@@ -148,7 +148,7 @@ export default function Home() {
           <FadeIn>
             <h2 className="font-serif text-5xl md:text-7xl tracking-tight mb-8 text-gradient max-w-3xl">The anatomy of AI emissions.</h2>
             <p className="text-xl text-white/40 max-w-2xl mb-24 font-light leading-relaxed">
-              Generalist platforms use rough spend-based estimates. GreenLens maps your physical infrastructure across all three scopes with deep engineering precision.
+              Generalist platforms use rough spend-based estimates. Carbon Compute maps your physical infrastructure across all three scopes with deep engineering precision.
             </p>
           </FadeIn>
 
@@ -243,7 +243,7 @@ export default function Home() {
           <div className="text-center max-w-3xl mx-auto mb-40">
             <FadeIn>
               <h2 className="font-serif text-5xl md:text-7xl tracking-tight mb-8">Engineered for Hyperscalers.</h2>
-              <p className="text-xl text-white/40 font-light leading-relaxed">Generic ESG platforms aren&apos;t built for AI infrastructure. GreenLens understands the compute layer intimately.</p>
+              <p className="text-xl text-white/40 font-light leading-relaxed">Generic ESG platforms aren&apos;t built for AI infrastructure. Carbon Compute understands the compute layer intimately.</p>
             </FadeIn>
           </div>
 
@@ -349,14 +349,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto mb-12">
           <div className="flex items-center gap-3 text-white mb-6">
             <Server className="w-5 h-5 text-brand-primary" />
-            <span className="font-serif font-medium text-xl tracking-tight">GreenLens DC</span>
+            <span className="font-serif font-medium text-xl tracking-tight">Carbon Compute</span>
           </div>
           <p className="max-w-xs text-white/30 text-sm leading-relaxed font-light">
             The AI-native carbon accounting engine for data centers. Built in Paris. Engineered for the global grid.
           </p>
         </div>
         <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 text-xs text-white/20 font-light">
-          <p>© 2026 GreenLens DC. All rights reserved.</p>
+          <p>© 2026 Carbon Compute. All rights reserved.</p>
         </div>
       </footer>
 
